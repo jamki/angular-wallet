@@ -15,7 +15,7 @@ walletApp.controller('walletCtrl', function ($scope) {
 	];
 
 	$scope.walletEntries = [
-		{ 'amount': 100, remove:false }
+		{ 'amount': 100 }
 	];
 
 	$scope.getEntries = function() {
@@ -23,17 +23,17 @@ walletApp.controller('walletCtrl', function ($scope) {
 	};
 
 	$scope.addAmount = function() {
-		$scope.walletEntries.push({ amount:$scope.walletAmount, remove:false });
+		$scope.walletEntries.push({ amount:$scope.walletAmount });
 		$scope.walletAmount = '';
 	};
 
 	$scope.minusAmount = function() {
-		$scope.walletEntries.push({ amount:-$scope.walletAmount, remove:false });
+		$scope.walletEntries.push({ amount:-$scope.walletAmount });
 		$scope.walletAmount = '';
 	};
 
 	$scope.resetWallet = function() {
-		$scope.walletEntries = 	$scope.walletEntries = [{ 'amount': 100, remove:false }];
+		$scope.walletEntries = 	$scope.walletEntries = [{ 'amount': 100 }];
 		// insert a default function
 	};
 

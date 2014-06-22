@@ -1530,7 +1530,27 @@ table {
 ** jk
 ** 20/06/14 
 */
+html {
+  background: url('../img/large_leather.png');
+}
+body {
+  background: transparent;
+}
 .wrapper {
-  border: 1px solid black;
-  margin: 0 auto;
-  max-width: 1024px; }
+  background: rgba(255,255,255, 0.8);
+  margin: 10px auto 0 auto;
+  max-width: 740px;
+  overflow: auto;
+  padding: 30px;
+}
+.side-nav {
+  float: left;
+  overflow: auto;
+  width: 28%;
+  margin-right: 2%;
+}
+.main {
+  float: left;
+  overflow: auto;
+  width: 70%;
+}
