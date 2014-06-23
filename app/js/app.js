@@ -1,10 +1,12 @@
 'use strict';
 
-/* Controllers */
+/* controller */
 
 var walletApp = angular.module('walletApp', []);
 
 walletApp.controller('walletCtrl', function ($scope) {
+
+	$scope.date = new Date();
 
 	$scope.currencies = [
 		{ 'name': 'BIT', 'icon': 'fa-btc' },
@@ -15,7 +17,7 @@ walletApp.controller('walletCtrl', function ($scope) {
 	];
 
 	$scope.walletEntries = [
-		{ 'amount': 100 }
+		{ 'amount': 0 }
 	];
 
 	$scope.getEntries = function() {
@@ -28,13 +30,19 @@ walletApp.controller('walletCtrl', function ($scope) {
 	};
 
 	$scope.minusAmount = function() {
-		$scope.walletEntries.push({ amount:-$scope.walletAmount });
-		$scope.walletAmount = '';
+		// check if the new total will be a minus amount
+		var walletTotal = $scope.getTotal();
+		walletTotal = walletTotal - $scope.walletAmount;
+		if (walletTotal < 0) {
+			alert('Total cannot be a negative amount');
+		} else {
+			$scope.walletEntries.push({ amount:-$scope.walletAmount });
+			$scope.walletAmount = '';
+		}		
 	};
 
 	$scope.resetWallet = function() {
 		$scope.walletEntries = 	$scope.walletEntries = [{ 'amount': 100 }];
-		// insert a default function
 	};
 
 	$scope.getTotal = function() {

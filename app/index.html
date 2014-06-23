@@ -9,83 +9,75 @@
   <title>Angular.js - Wallet</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="http://fonts.googleapis.com/css?family=Fjalla+One|Cantarell:400,400italic,700italic,700" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/main.css">
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 <body ng-controller="walletCtrl">
 
+	<div class="wrapper">
+		<header>
+			<nav class="navbar navbar-inverse" role="navigation">
+				<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<h1><a class="navbar-brand" href="http://jakimpton.co.uk/angular-wallet/">Angular Wallet</a></h1>
+					</div>
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li class="active"><a href="http://jakimpton.co.uk/angular-wallet/">Home</a></li>
+							<li><a href="#" ng:click="resetWallet()">Reset</a></li>
+							<li><a href="view-source:http://jakimpton.co.uk/angular-wallet/">View Source</a></li>
+						</ul>
+					</div><!-- /.navbar-collapse -->
+				</div><!-- /.container-fluid -->
+			</nav>
+		</header>
 
-<!--
-+ Setup 30-45 mins
-  - installing gulp / file structure / sass / iconfonts
-+ Angular JS - 1.30 - gulp fail - 15.01
-  - inputs - calculate total > https://docs.angularjs.org/guide/concepts
-+ Cloned seed-app - 15.01
-  - building header and inserting basic logic
-+ Restarted from scratch - 17.10
-  - 
--->
+		<div class="side-nav">
+			<h2>Select / Change Currency</h2>
+			<select ng-model="currentCurrency" ng-init="currentCurrency=GBP">
+	    		<option ng-repeat="currency in currencies" value="{{currency.icon}}">{{currency.name}}</option>
+			</select>    
+		</div>
 
-<div class="wrapper">
-	<header>
-		<nav class="navbar navbar-inverse" role="navigation">
-			<div class="container-fluid">
-			<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<h1><a class="navbar-brand" href="#">Angular Wallet</a></h1>
-				</div>
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#" ng:click="resetWallet()">Reset</a></li>
-						<li><a href="view-source:http://jakimpton.co.uk/angular-wallet/">View Source</a></li>
-					</ul>
-				</div><!-- /.navbar-collapse -->
-			</div><!-- /.container-fluid -->
-		</nav>
+		<div class="main">
+			<form name="walletForm" novalidate>
+				<input type="number" name="walletValue" placeholder="Enter an amount..." ng-model="walletAmount" ng-model-instant ng-pattern="/^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/" required />
+				<button class="add btn btn-success" ng-disabled="walletForm.$invalid" ng:click="addAmount()"><i class="fa fa-plus-square"></i> Add</button>
+				<button class="reduce btn btn-danger" ng-disabled="walletForm.$invalid" ng:click="minusAmount()"><i class="fa fa-minus-square"></i> Remove</button> 
 
-	</header>
+				<p ng-show="walletForm.walletValue.$invalid && !walletForm.walletValue.$pristine" class="help-text">Enter a valid number.</p> 
+			</form>
 
-	<div class="side-nav">
-		<h2>Change Currency</h2>
-		<ul class="nav nav-pills nav-stacked">
-			<li ng-repeat="currency in currencies"><a href="#"><i class="fa {{currency.icon}}"></i> {{currency.name}}</a></li>
-		</ul>
-	</div>
+			<h2>Wallet Entries</h2>
+			<ul class="entries list-group">
+				<li class="list-group-item" ng-repeat="walletEntry in walletEntries">
+					<i class="fa {{currentCurrency}}"></i>{{walletEntry.amount}} - {{date | date:'dd-MM-yy'}}
+				</li>
+			</ul>
 
-	<div class="main">
-		<form>
-			<input type="number" name="walletValue" min="0" size="30" placeholder="Enter the amount here..." ng-model="walletAmount" ng-model-instant required />
-			<button class="add btn btn-success" ng:click="addAmount()"><i class="fa fa-plus-square"></i> add</button>
-			<button class="reduce btn btn-danger" ng:click="minusAmount()"><i class="fa fa-minus-square"></i> reduce</button>  
-		</form>
+			<h2>your total is: <i class="fa {{currentCurrency}}"></i>{{getTotal()}}</h2>
+			<h2>entries: {{getEntries()}}</h2>
 
-		<h2>Wallet Entries</h2>
-		<ul class="entries list-group">
-			<li class="list-group-item" ng-repeat="walletEntry in walletEntries">{{walletEntry.amount}}</li>
-		</ul>
+			<button class="reset btn btn-info" ng:click="resetWallet()">Reset</button>
 
-		<h2>your total is: {{currency.name}} {{getTotal()}}</h2>
-		<h3>entries: {{getEntries()}}</h3>
-
-		<button class="reset btn btn-info" ng:click="resetWallet()">Reset</button>
+		</div>
 
 	</div>
-
-</div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="bower_components/angular/angular.js"></script>
-	<script src="bower_components/angular-route/angular-route.js"></script>
+	<script src="bower_components/angular/angular.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/app.js"></script>
+	
 </body>
 </html>
 
