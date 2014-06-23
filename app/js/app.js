@@ -42,7 +42,7 @@ walletApp.controller('walletCtrl', function ($scope) {
 	};
 
 	$scope.resetWallet = function() {
-		$scope.walletEntries = 	$scope.walletEntries = [{ 'amount': 100 }];
+		$scope.walletEntries = 	$scope.walletEntries = [{ 'amount': 0 }];
 	};
 
 	$scope.getTotal = function() {
